@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.quizz_no_bolso.demo.model.User;
+import com.quizz_no_bolso.demo.model.request.UserDTO;
 import com.quizz_no_bolso.demo.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,13 +44,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User userDetails) {
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserDTO userDetails) {
         User user = service.addUser(userDetails);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UserDTO userDetails) {
         User user = service.updateUser(id, userDetails);
 
         return new ResponseEntity<>(user, HttpStatus.OK);

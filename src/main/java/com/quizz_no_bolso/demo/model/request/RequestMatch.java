@@ -1,16 +1,12 @@
 package com.quizz_no_bolso.demo.model.request;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class RequestMatch {
-    private String quizzId;
+    @NotNull(message = "Player ID cannot be null")
+    @Size(min = 1, message = "Player ID must not be empty")
     private String playerId;
-
-    public String getQuizzId() {
-        return quizzId;
-    }
-
-    public void setQuizzId(String quizzId) {
-        this.quizzId = quizzId;
-    }
 
     public String getPlayerId() {
         return playerId;

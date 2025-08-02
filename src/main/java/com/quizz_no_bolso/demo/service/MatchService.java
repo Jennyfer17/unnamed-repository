@@ -19,14 +19,12 @@ public class MatchService {
 
     private final MatchRepository repository;
     private final UserService playerService;
-    private final AnswerService answerService;
     private final QuestionService questionService;
 
     public MatchService(MatchRepository repository,
-            UserService playerService, AnswerService answerService, QuestionService questionService) {
+            UserService playerService, QuestionService questionService) {
         this.repository = repository;
         this.playerService = playerService;
-        this.answerService = answerService;
         this.questionService = questionService;
     }
 

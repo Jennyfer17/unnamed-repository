@@ -2,9 +2,11 @@ package com.quizz_no_bolso.demo.service;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.quizz_no_bolso.demo.model.Question;
+import com.quizz_no_bolso.demo.model.request.QuestionDTO;
 import com.quizz_no_bolso.demo.repository.QuestionRepository;
 import com.quizz_no_bolso.demo.shared.Utils;
 
@@ -12,18 +14,20 @@ import com.quizz_no_bolso.demo.shared.Utils;
 public class QuestionService {
 
     private final QuestionRepository repository;
+    private final ModelMapper modelMapper;
 
-    public QuestionService(QuestionRepository repository) {
+    public QuestionService(QuestionRepository repository, ModelMapper modelMapper) {
         this.repository = repository;
+        this.modelMapper = modelMapper;
     }
 
-    public Question addQuestion(Question newQuestion) {
-        Question question = new Question();
+    public Question addQuestion(QuestionDTO newQuestion) {
+        Question question = modelMapper.map(newQuestion, Question.class);
         question.setId(Utils.generateRandomId());
-        question.setText(newQuestion.getText());
-        question.setOptions(newQuestion.getOptions());
-        question.setCorrectOptionIndex(newQuestion.getCorrectOptionIndex());
-        question.setPoint(newQuestion.getPoint());
+        // question.setText(newQuestion.getText());
+        // question.setOptions(newQuestion.getOptions());
+        // question.setCorrectOptionIndex(newQuestion.getCorrectOptionIndex());
+        // question.setPoint(newQuestion.getPoint());
 
         return repository.save(question);
     }
@@ -43,12 +47,9 @@ public class QuestionService {
         return questions;
     }
 
-    public Question updateQuestion(String id, Question updatedQuestion) {
+    public Question updateQuestion(String id, QuestionDTO updatedQuestion) {
         Question question = getQuestionById(id);
-        question.setText(updatedQuestion.getText());
-        question.setOptions(updatedQuestion.getOptions());
-        question.setPoint(updatedQuestion.getPoint());
-        question.setCorrectOptionIndex(updatedQuestion.getCorrectOptionIndex());
+        question = modelMapper.map(updatedQuestion, Question.class);
 
         return repository.save(question);
     }

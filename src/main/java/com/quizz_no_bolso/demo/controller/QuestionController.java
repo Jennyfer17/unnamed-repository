@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.quizz_no_bolso.demo.model.Question;
+import com.quizz_no_bolso.demo.model.request.QuestionDTO;
 import com.quizz_no_bolso.demo.service.QuestionService;
+
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -39,14 +42,14 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<Question> createQuestion(@RequestBody Question questionDetails) {
+    public ResponseEntity<Question> createQuestion(@RequestBody @Valid QuestionDTO questionDetails) {
         Question question = service.addQuestion(questionDetails);
         return new ResponseEntity<>(question, HttpStatus.OK);   
     }
 
-    @PutMapping
-    public String updateQuestion() {
-        
-        return "Update question not implemented yet";
+    @PutMapping("/{id}")
+    public ResponseEntity<Question> updateQuestion(@PathVariable String id, @RequestBody @Valid QuestionDTO questionDetails) {
+        Question updatedQuestion = service.updateQuestion(id, questionDetails);
+        return new ResponseEntity<>(updatedQuestion, HttpStatus.OK);
     }
 }

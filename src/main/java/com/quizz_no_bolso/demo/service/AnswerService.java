@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.quizz_no_bolso.demo.model.Question;
-// import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 import com.quizz_no_bolso.demo.model.Match;
 import com.quizz_no_bolso.demo.model.Answer;
 import com.quizz_no_bolso.demo.model.request.RequestSubmitAnswer;
 import com.quizz_no_bolso.demo.repository.AnswerRepository;
 import com.quizz_no_bolso.demo.shared.Utils;
+
+import jakarta.validation.Valid;
 
 @Service
 public class AnswerService {
@@ -23,13 +24,8 @@ public class AnswerService {
     public Answer addResponse(Match match, Question question) {
         Answer ans = new Answer();
         ans.setId(Utils.generateRandomId());
-        // ans.setText(question.getOptions().get(newResponse.getAnswerId()));
         ans.setQuestion(question);
         ans.setMatch(match);
-        // ans.setAnsweredAt(System.currentTimeMillis());
-        // boolean isCorrect = isAnswerCorrect(question, newResponse);
-        // ans.setCorrect(isCorrect);
-        // ans.setPointsEarned(isCorrect ? question.getPoint() : 0);
 
         return repository.save(ans);
     }
@@ -49,7 +45,7 @@ public class AnswerService {
         return repository.findById(id).orElseThrow();
     }
 
-    private boolean isAnswerCorrect(Question question, RequestSubmitAnswer newResponse) {
+    private boolean isAnswerCorrect(Question question, @Valid RequestSubmitAnswer newResponse) {
         return question.getCorrectOptionIndex() == newResponse.getOption();
     }
 
